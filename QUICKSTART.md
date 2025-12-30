@@ -143,8 +143,8 @@ docker-compose down
 URL: http://localhost:8080/h2-console
 
 JDBC URL: jdbc:h2:mem:cupomdb
-Username: sa
-Password: (deixar em branco)
+Username: samuelcupom
+Password: 123
 ```
 
 ## 📚 Próximos Passos
