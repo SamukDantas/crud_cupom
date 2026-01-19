@@ -1,52 +1,6 @@
-# 🎫 CRUD Cupom API - Versão em Português-BR
+# 🎫 CRUD Cupom API
 
 Sistema de gerenciamento de cupons de desconto desenvolvido com **Spring Boot 3.2.11**, Java 17 e H2 Database.
-
-## ✨ Diferenças da Versão em Português-BR
-
-Esta versão foi completamente refatorada para utilizar nomenclatura em português brasileiro:
-
-### Mudanças Principais
-
-**Classes Renomeadas:**
-- `CrudCupomApplication` → `AplicacaoCrudCupom`
-- `CupomService` → `CupomServico`
-- `CupomRepository` → `CupomRepositorio`
-- `CupomController` → `CupomControlador`
-- `CupomRequest` → `CupomRequisicao`
-- `CupomResponse` → `CupomResposta`
-
-**Métodos Traduzidos:**
-- `createCupom()` → `criarCupom()`
-- `getAllActiveCupons()` → `obterTodosCuponsAtivos()`
-- `getCupomById()` → `obterCupomPorId()`
-- `updateCupom()` → `atualizarCupom()`
-- `deleteCupom()` → `excluirCupom()`
-- `publishCupom()` → `publicarCupom()`
-
-**Propriedades Traduzidas:**
-- `code` → `codigo`
-- `description` → `descricao`
-- `discountValue` → `valorDesconto`
-- `expirationDate` → `dataExpiracao`
-- `published` → `publicado`
-- `deleted` → `excluido`
-- `active` → `ativo`
-- `expired` → `expirado`
-- `createdAt` → `criadoEm`
-- `updatedAt` → `atualizadoEm`
-
-**Exceções Traduzidas:**
-- `CupomNotFoundException` → `CupomNaoEncontradoException`
-- `CupomAlreadyDeletedException` → `CupomJaExcluidoException`
-- `InvalidCupomException` → `CupomInvalidoException`
-- `DuplicateCupomCodeException` → `CodigoCupomDuplicadoException`
-- `GlobalExceptionHandler` → `TratadorExcecaoGlobal`
-
-**Código Limpo:**
-- ✅ Comentários excessivos removidos
-- ✅ Apenas JavaDoc essencial mantido
-- ✅ Código mais limpo e profissional
 
 ## 📋 Requisitos Atendidos
 
