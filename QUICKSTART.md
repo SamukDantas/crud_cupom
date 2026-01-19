@@ -1,4 +1,4 @@
-# 🚀 Guia de Início Rápido - CRUD Cupom
+# 🚀 Guia de Início Rápido - CRUD Cupom (PT-BR)
 
 ## ⚡ Executar Rapidamente
 
@@ -43,9 +43,9 @@ open target/site/jacoco/index.html
 mvn clean verify
 
 # Individual
-mvn checkstyle:check    # Estilo de código
-mvn pmd:check           # Análise de código
-mvn spotbugs:check      # Detecção de bugs
+mvn checkstyle:check
+mvn pmd:check
+mvn spotbugs:check
 ```
 
 ## 📋 Teste Manual da API
@@ -55,11 +55,11 @@ mvn spotbugs:check      # Detecção de bugs
 curl -X POST http://localhost:8080/api/cupons \
   -H "Content-Type: application/json" \
   -d '{
-    "code": "ABC-123",
-    "description": "Desconto de 10%",
-    "discountValue": 10.0,
-    "expirationDate": "2025-12-31",
-    "published": true
+    "codigo": "ABC-123",
+    "descricao": "Desconto de 10%",
+    "valorDesconto": 10.0,
+    "dataExpiracao": "2025-12-31",
+    "publicado": true
   }'
 ```
 
@@ -75,7 +75,7 @@ curl http://localhost:8080/api/cupons/1
 
 ### 4. Buscar por Código
 ```bash
-curl http://localhost:8080/api/cupons/code/ABC123
+curl http://localhost:8080/api/cupons/codigo/ABC123
 ```
 
 ### 5. Atualizar Cupom
@@ -83,8 +83,8 @@ curl http://localhost:8080/api/cupons/code/ABC123
 curl -X PUT http://localhost:8080/api/cupons/1 \
   -H "Content-Type: application/json" \
   -d '{
-    "description": "Novo desconto de 15%",
-    "discountValue": 15.0
+    "descricao": "Novo desconto de 15%",
+    "valorDesconto": 15.0
   }'
 ```
 
@@ -93,19 +93,24 @@ curl -X PUT http://localhost:8080/api/cupons/1 \
 curl -X DELETE http://localhost:8080/api/cupons/1
 ```
 
-## 📊 Verificar Cobertura
-
+### 7. Publicar Cupom
 ```bash
-# Executar testes e gerar relatório
-mvn clean test jacoco:report
+curl -X POST http://localhost:8080/api/cupons/1/publicar
+```
 
-# Verificar se atingiu 80%
-mvn jacoco:check
+### 8. Despublicar Cupom
+```bash
+curl -X POST http://localhost:8080/api/cupons/1/despublicar
+```
 
-# Relatórios disponíveis em:
-# - target/site/jacoco/index.html (Cobertura)
-# - target/site/checkstyle.html (Checkstyle)
-# - target/site/pmd.html (PMD)
+## 🔧 H2 Console
+
+```
+URL: http://localhost:8080/h2-console
+
+JDBC URL: jdbc:h2:mem:cupomdb
+Username: samuelcupom
+Password: 123
 ```
 
 ## 🎯 Comandos Essenciais
@@ -130,27 +135,18 @@ docker-compose down
 
 ## 📝 Regras de Negócio Testadas
 
-✅ Código normalizado (remove caracteres especiais)
-✅ Validação de data de expiração (não pode ser passado)
-✅ Validação de valor de desconto (mínimo 0.5)
-✅ Soft delete (não perde dados)
-✅ Não deletar cupom já deletado
+✅ Código normalizado (remove caracteres especiais)  
+✅ Validação de data de expiração (não pode ser passado)  
+✅ Validação de valor de desconto (mínimo 0.5)  
+✅ Soft delete (não perde dados)  
+✅ Não deletar cupom já deletado  
 ✅ Código único (não permite duplicados)
-
-## 🔧 H2 Console
-
-```
-URL: http://localhost:8080/h2-console
-
-JDBC URL: jdbc:h2:mem:cupomdb
-Username: samuelcupom
-Password: 123
-```
 
 ## 📚 Próximos Passos
 
 1. ✅ Executar testes: `mvn test`
 2. ✅ Verificar cobertura: `mvn jacoco:report`
 3. ✅ Testar API com Swagger: http://localhost:8080/swagger-ui.html
-4. ✅ Revisar código e arquitetura
+4. ✅ Revisar código refatorado em português-BR
 5. ✅ Ler documentação completa no README.md
+6. ✅ Ver lista de mudanças em MUDANCAS.md

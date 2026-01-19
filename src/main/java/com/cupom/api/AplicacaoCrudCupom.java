@@ -21,9 +21,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         )
     )
 )
-public class CrudCupomApplication {
+public class AplicacaoCrudCupom {
 
     public static void main(String[] args) {
-        SpringApplication.run(CrudCupomApplication.class, args);
+        SpringApplication.run(AplicacaoCrudCupom.class, args);
     }
 }

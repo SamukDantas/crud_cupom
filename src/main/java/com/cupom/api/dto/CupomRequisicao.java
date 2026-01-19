@@ -13,28 +13,28 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * DTO para criação/atualização de cupons
+ * DTO para criação e atualização de cupons
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CupomRequest {
+public class CupomRequisicao {
 
     @NotBlank(message = "Código é obrigatório")
     @Size(min = 6, message = "Código deve ter no mínimo 6 caracteres alfanuméricos")
-    private String code;
+    private String codigo;
 
     @NotBlank(message = "Descrição é obrigatória")
     @Size(max = 500, message = "Descrição deve ter no máximo 500 caracteres")
-    private String description;
+    private String descricao;
 
     @NotNull(message = "Valor de desconto é obrigatório")
     @DecimalMin(value = "0.5", message = "Valor de desconto deve ser no mínimo 0.5")
-    private BigDecimal discountValue;
+    private BigDecimal valorDesconto;
 
     @NotNull(message = "Data de expiração é obrigatória")
-    private LocalDate expirationDate;
+    private LocalDate dataExpiracao;
 
-    private Boolean published;
+    private Boolean publicado;
 }
