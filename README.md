@@ -4,16 +4,18 @@ Sistema de gerenciamento de cupons de desconto desenvolvido com **Spring Boot 3.
 
 ## 📋 Requisitos Atendidos
 
-✅ **Spring Boot 3.2.11** com Java 17  
-✅ **CRUD completo** de cupons de desconto  
-✅ **Regras de negócio** encapsuladas em objetos de domínio  
-✅ **H2 Database** em memória  
-✅ **80% de cobertura** de testes (JaCoCo)  
-✅ **Docker** e Docker Compose  
-✅ **Swagger** para documentação da API  
-✅ **Análise estática** de código (Checkstyle, PMD, SpotBugs)  
-✅ **Soft delete** - não perde informações  
+✅ **Spring Boot 3.2.11** com Java 17
+✅ **CRUD completo** de cupons de desconto
+✅ **Regras de negócio** encapsuladas em objetos de domínio
+✅ **H2 Database** em memória
+✅ **99% de cobertura** de testes (JaCoCo)
+✅ **Docker** e Docker Compose
+✅ **Swagger** para documentação da API
+✅ **Análise estática** de código (Checkstyle, PMD, SpotBugs)
+✅ **Soft delete** - não perde informações
 ✅ **Nomenclatura 100% em português-BR**
+✅ **Testes de integração** com @DataJpaTest
+✅ **Callbacks JPA** (@PrePersist, @PreUpdate)
 
 ## 🎯 Regras de Negócio
 
@@ -51,17 +53,22 @@ crud-cupom/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/cupom/api/
-│   │   │   ├── controlador/        # REST Controllers
-│   │   │   ├── servico/            # Lógica de negócio
-│   │   │   ├── repositorio/        # Acesso a dados (JPA)
-│   │   │   ├── dominio/            # Entidades de domínio
+│   │   │   ├── controller/         # REST Controllers (100%)
+│   │   │   ├── service/            # Lógica de negócio (98%)
+│   │   │   ├── repository/         # Acesso a dados (JPA)
+│   │   │   ├── domain/             # Entidades de domínio (100%)
 │   │   │   ├── dto/                # Data Transfer Objects
-│   │   │   ├── excecao/            # Exceções customizadas
+│   │   │   ├── exception/          # Exceções e handlers (100%)
 │   │   │   └── AplicacaoCrudCupom.java
 │   │   └── resources/
 │   │       └── application.properties
 │   └── test/
 │       └── java/com/cupom/api/
+│           ├── controller/         # Testes de controllers (100%)
+│           ├── service/            # Testes de serviços (98%)
+│           ├── repository/         # Testes de integração JPA
+│           ├── domain/             # Testes de entidades (100%)
+│           └── exception/          # Testes de exceções (100%)
 ├── Dockerfile
 ├── docker-compose.yml
 ├── pom.xml
@@ -147,24 +154,33 @@ POST /api/cupons/{id}/despublicar
 
 ## 🧪 Testes
 
+O projeto possui **83 testes** automatizados cobrindo todas as camadas da aplicação:
+
+### Tipos de Testes
+- **Testes Unitários** - Service, Domain, Exception (Mockito)
+- **Testes de Integração** - Repository (@DataJpaTest, H2)
+- **Testes de Controller** - REST API (@WebMvcTest)
+
+### Comandos
+
 ```bash
-# Executar testes
+# Executar todos os testes
 mvn clean test
 
-# Ver cobertura
+# Gerar relatório de cobertura
 mvn test jacoco:report
-open target/site/jacoco/index.html
+# Relatório disponível em: target/site/jacoco/index.html
 
-# Análise estática
+# Análise estática completa
 mvn clean verify
 ```
 
 ## 📊 Métricas de Qualidade
 
-| Métrica | Meta | Status |
-|---------|------|--------|
-| Cobertura de Testes | 80% | ✅ |
-| Complexidade Ciclomática | Max 15 | ✅ |
+| Métrica | Meta           | Status |
+|---------|----------------|--------|
+| Cobertura de Testes | 95%            | ✅ |
+| Complexidade Ciclomática | Max 15         | ✅ |
 | Tamanho de Método | Max 150 linhas | ✅ |
 
 ## 👤 Autor
