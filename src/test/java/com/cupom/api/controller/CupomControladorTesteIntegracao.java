@@ -395,4 +395,20 @@ class CupomControladorTesteIntegracao {
                         .content(objectMapper.writeValueAsString(requisicao)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void deveLancarExcecaoDeValidacaoAoCriarCupomComValorDescontoNulo() throws Exception {
+        CupomRequisicao requisicao = new CupomRequisicao();
+        requisicao.setCodigo("ABC123");
+        requisicao.setDescricao("Cupom de teste");
+        requisicao.setValorDesconto(null);
+        requisicao.setDataExpiracao(LocalDate.now().plusDays(30));
+        requisicao.setPublicado(false);
+
+        mockMvc.perform(post("/api/cupons")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requisicao)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.erros.valorDesconto", notNullValue()));
+    }
 }

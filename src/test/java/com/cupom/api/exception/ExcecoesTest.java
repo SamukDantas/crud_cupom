@@ -3,8 +3,16 @@ package com.cupom.api.exception;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Testes para as exceções customizadas e TratadorExcecaoGlobal
@@ -124,5 +132,46 @@ class ExcecoesTest {
         assertThat(resposta.getBody().getStatus()).isEqualTo(500);
         assertThat(resposta.getBody().getErro()).isEqualTo("Erro Interno do Servidor");
         assertThat(resposta.getBody().getMensagem()).contains("Ocorreu um erro inesperado");
+    }
+
+    @Test
+    @DisplayName("TratadorExcecaoGlobal - Deve tratar erros de validação")
+    void deveTratarErrosValidacao() {
+        TratadorExcecaoGlobal tratador = new TratadorExcecaoGlobal();
+        
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError1 = new FieldError("cupomRequisicao", "codigo", "Código é obrigatório");
+        FieldError fieldError2 = new FieldError("cupomRequisicao", "valorDesconto", "Valor deve ser maior que zero");
+        
+        when(bindingResult.getAllErrors()).thenReturn(List.of(fieldError1, fieldError2));
+        
+        MethodArgumentNotValidException excecao = new MethodArgumentNotValidException(null, bindingResult);
+
+        var resposta = tratador.tratarValidacao(excecao);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resposta.getBody()).isNotNull();
+        assertThat(resposta.getBody().get("status")).isEqualTo(400);
+        assertThat(resposta.getBody().get("erro")).isEqualTo("Validação Falhou");
+        
+        @SuppressWarnings("unchecked")
+        Map<String, String> erros = (Map<String, String>) resposta.getBody().get("erros");
+        assertThat(erros).containsEntry("codigo", "Código é obrigatório");
+        assertThat(erros).containsEntry("valorDesconto", "Valor deve ser maior que zero");
+    }
+
+    @Test
+    @DisplayName("RespostaErro - Deve criar objeto com builder")
+    void deveCriarRespostaErroComBuilder() {
+        var resposta = TratadorExcecaoGlobal.RespostaErro.builder()
+                .status(404)
+                .erro("Erro teste")
+                .mensagem("Mensagem teste")
+                .build();
+
+        assertThat(resposta.getStatus()).isEqualTo(404);
+        assertThat(resposta.getErro()).isEqualTo("Erro teste");
+        assertThat(resposta.getMensagem()).isEqualTo("Mensagem teste");
+        assertThat(resposta.getDataHora()).isNull();
     }
 }
