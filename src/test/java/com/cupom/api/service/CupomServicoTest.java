@@ -328,4 +328,129 @@ class CupomServicoTest {
 
         assertThat(resposta).isNotNull();
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao despublicar cupom inexistente")
+    void deveLancarExcecaoDespublicarCupomInexistente() {
+        when(cupomRepositorio.findById(999L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> cupomServico.despublicarCupom(999L))
+                .isInstanceOf(CupomNaoEncontradoException.class);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao publicar cupom inexistente")
+    void deveLancarExcecaoPublicarCupomInexistente() {
+        when(cupomRepositorio.findById(999L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> cupomServico.publicarCupom(999L))
+                .isInstanceOf(CupomNaoEncontradoException.class);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao deletar cupom inexistente")
+    void deveLancarExcecaoDeletarCupomInexistente() {
+        when(cupomRepositorio.findById(999L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> cupomServico.excluirCupom(999L))
+                .isInstanceOf(CupomNaoEncontradoException.class);
+    }
+
+    @Test
+    @DisplayName("Deve atualizar apenas descrição do cupom")
+    void deveAtualizarApenasDescricao() {
+        CupomRequisicao requisicao = CupomRequisicao.builder()
+                .descricao("Nova descrição")
+                .build();
+
+        when(cupomRepositorio.findById(1L)).thenReturn(Optional.of(cupomExemplo));
+        when(cupomRepositorio.save(any(Cupom.class))).thenReturn(cupomExemplo);
+
+        CupomResposta resposta = cupomServico.atualizarCupom(1L, requisicao);
+
+        assertThat(resposta).isNotNull();
+        verify(cupomRepositorio, times(1)).save(any(Cupom.class));
+    }
+
+    @Test
+    @DisplayName("Deve atualizar apenas valor de desconto")
+    void deveAtualizarApenasValorDesconto() {
+        CupomRequisicao requisicao = CupomRequisicao.builder()
+                .valorDesconto(new BigDecimal("20.00"))
+                .build();
+
+        when(cupomRepositorio.findById(1L)).thenReturn(Optional.of(cupomExemplo));
+        when(cupomRepositorio.save(any(Cupom.class))).thenReturn(cupomExemplo);
+
+        CupomResposta resposta = cupomServico.atualizarCupom(1L, requisicao);
+
+        assertThat(resposta).isNotNull();
+        verify(cupomRepositorio, times(1)).save(any(Cupom.class));
+    }
+
+    @Test
+    @DisplayName("Deve atualizar apenas data de expiração")
+    void deveAtualizarApenasDataExpiracao() {
+        CupomRequisicao requisicao = CupomRequisicao.builder()
+                .dataExpiracao(LocalDate.now().plusDays(60))
+                .build();
+
+        when(cupomRepositorio.findById(1L)).thenReturn(Optional.of(cupomExemplo));
+        when(cupomRepositorio.save(any(Cupom.class))).thenReturn(cupomExemplo);
+
+        CupomResposta resposta = cupomServico.atualizarCupom(1L, requisicao);
+
+        assertThat(resposta).isNotNull();
+        verify(cupomRepositorio, times(1)).save(any(Cupom.class));
+    }
+
+    @Test
+    @DisplayName("Deve atualizar apenas status de publicação")
+    void deveAtualizarApenasStatusPublicacao() {
+        CupomRequisicao requisicao = CupomRequisicao.builder()
+                .publicado(true)
+                .build();
+
+        when(cupomRepositorio.findById(1L)).thenReturn(Optional.of(cupomExemplo));
+        when(cupomRepositorio.save(any(Cupom.class))).thenReturn(cupomExemplo);
+
+        CupomResposta resposta = cupomServico.atualizarCupom(1L, requisicao);
+
+        assertThat(resposta).isNotNull();
+        verify(cupomRepositorio, times(1)).save(any(Cupom.class));
+    }
+
+    @Test
+    @DisplayName("Deve converter cupom para resposta com todos os campos")
+    void deveConverterCupomParaResposta() {
+        cupomExemplo.setPublicado(true);
+        cupomExemplo.setExcluido(false);
+
+        when(cupomRepositorio.findById(1L)).thenReturn(Optional.of(cupomExemplo));
+
+        CupomResposta resposta = cupomServico.obterCupomPorId(1L);
+
+        assertThat(resposta.getId()).isEqualTo(cupomExemplo.getId());
+        assertThat(resposta.getCodigo()).isEqualTo(cupomExemplo.getCodigo());
+        assertThat(resposta.getDescricao()).isEqualTo(cupomExemplo.getDescricao());
+        assertThat(resposta.getValorDesconto()).isEqualTo(cupomExemplo.getValorDesconto());
+        assertThat(resposta.getDataExpiracao()).isEqualTo(cupomExemplo.getDataExpiracao());
+        assertThat(resposta.getPublicado()).isEqualTo(cupomExemplo.getPublicado());
+        assertThat(resposta.getExcluido()).isEqualTo(cupomExemplo.getExcluido());
+        assertThat(resposta.getCriadoEm()).isEqualTo(cupomExemplo.getCriadoEm());
+        assertThat(resposta.getAtualizadoEm()).isEqualTo(cupomExemplo.getAtualizadoEm());
+    }
+
+    @Test
+    @DisplayName("Deve buscar cupom e verificar se está ativo")
+    void deveBuscarCupomEVerificarAtivo() {
+        cupomExemplo.setPublicado(true);
+        cupomExemplo.setExcluido(false);
+
+        when(cupomRepositorio.findById(1L)).thenReturn(Optional.of(cupomExemplo));
+
+        CupomResposta resposta = cupomServico.obterCupomPorId(1L);
+
+        assertThat(resposta.getAtivo()).isNotNull();
+    }
 }
